@@ -314,12 +314,14 @@ function GetPolicy(expires) {
   this.expires = expires || 3600;
 }
 
-GetPolicy.prototype.makeRequest = function(baseUrl, mac) {
+GetPolicy.prototype.makeRequest = function(baseUrl, mac, deadline) {
   if (!mac) {
     mac = new Mac(conf.ACCESS_KEY, conf.SECRET_KEY);
   }
 
-  var deadline = this.expires + Math.floor(Date.now() / 1000);
+  if(!deadline){
+    deadline = this.expires + Math.floor(Date.now() / 1000);
+  }
 
   if (baseUrl.indexOf('?') >= 0) {
     baseUrl += '&e=';
